@@ -9,8 +9,12 @@ import re
 
 def asoscrawl(params):
     prodlist = list()    
-    k=re.sub(r'\s+',r'&',params['keywords'])      
-    url = 'http://www.asos.com/search/shirt?q=' + k   
+    k=re.sub(r'\s+',r'\+',params['keywords']) 
+    if (params['gender'] == 'Male'):
+          url = 'http://www.asos.com/search/?q=men&q=' + k
+    else:
+          url = 'http://www.asos.com/search/?q=women&q=' + k   
+    print url
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text.encode('utf-8'))
     prodlink = list()    
@@ -41,5 +45,5 @@ if __name__ == '__main__':
     par['height'] = 12
     par['weight'] = 12
     par['gender'] = 'Male'
-    par['keywords'] = "skirt"
+    par['keywords'] = "shirt"
     pl = asoscrawl(par)                   
