@@ -9,7 +9,7 @@ import re
 
 def asoscrawl(params):
     prodlist = list()    
-    k=re.sub(r'\s+',r'\+',params['keywords']) 
+    k=re.sub(r'\s+',r'+',params['keywords']) 
     if (params['gender'] == 'Male'):
           url = 'http://www.asos.com/search/?q=men&q=' + k
     else:
@@ -33,7 +33,7 @@ def asoscrawl(params):
         d['img'] = m.group(0)
         p = re.search('ProductPriceText":"£([\d.]+)', str(soupp))
         d['cost'] = p.group(1)
-        d1 = re.search('ProductName":"([\-\w\s]+)', str(soupp)).group(1)
+        d1 = re.search('ProductName":"([\.\-\w\s]+)', str(soupp)).group(1)
         d['desc'] = d1
         d['site'] = 'http://content.asos-media.com/~/media/240613124858/Images/uk/Archive/june/asos-logo.png'
         prodlist.append(d)
@@ -45,5 +45,5 @@ if __name__ == '__main__':
     par['height'] = 12
     par['weight'] = 12
     par['gender'] = 'Male'
-    par['keywords'] = "shirt"
+    par['keywords'] = "shirt red"
     pl = asoscrawl(par)                   
