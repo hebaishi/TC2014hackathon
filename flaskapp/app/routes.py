@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import random
 from flask import Flask, render_template,request, flash
 from forms import Params
 from crawler_amazon import amazoncrawl
@@ -23,6 +24,7 @@ def params():
       par['keywords'] = form.keywords.data
       outlist = amazoncrawl(par)
       outlist = outlist + asoscrawl(par)
+      random.shuffle(outlist)
       return render_template('output.html', outlist=outlist)
     else:
       return 'Form posted.'
