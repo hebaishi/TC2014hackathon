@@ -9,7 +9,8 @@ import re
 
 def asoscrawl(params):
     prodlist = list()    
-    url = 'http://www.asos.com/search/shirt?q=shirt'    
+    k=re.sub(r'\s+',r'&',params['keywords'])      
+    url = 'http://www.asos.com/search/shirt?q=' + k   
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text.encode('utf-8'))
     prodlink = list()    
