@@ -12,6 +12,10 @@ def params():
     if form.validate() == False:
       flash('All fields are required.')
       flash(form.height.data)
+      #form.weight.data
+      d = dictionary()
+      d['weight'] = form.weight.data
+      pickle(d,"file.dump")
       return render_template('params.html', form=form)
     else:
       return 'Form posted.'
