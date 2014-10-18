@@ -1,5 +1,6 @@
 from flask import Flask, render_template,request, flash
 from forms import Params
+from crawler_amazon import amazoncrawl
 
 app = Flask(__name__)     
 app.secret_key = 'development key'
@@ -13,10 +14,12 @@ def params():
       flash('All fields are required.')
       flash(form.height.data)
       #form.weight.data
-      d = dictionary()
-      d['weight'] = form.weight.data
-      pickle(d,"file.dump")
-      return render_template('params.html', form=form)
+      par = dict()
+      par['height'] = 12
+      par['weight'] = 12
+      par['gender'] = 'Male'
+      par['keywords'] = "word1 word2"
+      return render_template('output.html', outlist=amazoncrawl(par))
     else:
       return 'Form posted.'
  

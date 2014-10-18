@@ -3,30 +3,44 @@ import requests
 import bs4
 import re
 
+# list is height, weight, gender, keywords
 
-url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=trousers'
 
-def amazoncrawl(params)
+def amazoncrawl(params):
+    url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=trousers'    
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text)
+    prodlist = list()    
     for link in soup.find_all('a'):
+        d = dict()
         if (re.search('qid=',str(link.get('href')))):        
-            line = ""
-            line = "DESC " + str(link.string)
-            line += " LINK " + str(link.get('href'))        
+            d['desc'] = str(link.string)
+            d['link'] = "http://www.amazon.co.uk" + str(link.get('href'))            
             prodlink = "http://www.amazon.co.uk/"+str(link.get('href'))
             response2 = requests.get(prodlink)
             soup2 = bs4.BeautifulSoup(response2.text)        
             for imgs in soup2.find_all('img'):
                 if (str(imgs.get('id')) == "detailImg"):            
-                    line += "IMG " + imgs.get('src')
-            m=re.findall('£(\d+)\.(\d+)',str(response2.text),re.I)
+                    d['img'] = imgs.get('src')
+                    break
+            m=re.findall('£(\d+)\.(\d+)',response2.text.encode('utf-8'),re.I)
             price=""            
             if (m):            
                 if (len(m)> 0):
                     price = str(m[len(m)-1][0]) + "." + str(m[len(m)-1][1])   
-            line += " PRICE "+ price
-            print line
+            d['cost'] = price
+            prodlist.append(d)
+    return prodlist
             
-#if __name__ == '__main__':
-            
+if __name__ == '__main__':
+    par = dict()
+    par['height'] = 12
+    par['weight'] = 12
+    par['gender'] = 'Male'
+    par['keywords'] = "word1 word2"
+    pl = amazoncrawl(par)            
+    
+    
+#    http://www.amazon.co.uk/gp/aw/s/ref=is_s_?ie=UTF8&k=trousers+xl&url=i%3Daps&page=4
+#    http://www.amazon.co.uk/gp/aw/s/ref=is_pg_2_1?rh=i%3Aaps%2Ck%3Atrousers+xl&page=2&keywords=trousers+xl&ie=UTF8&qid=1413659862
+#    http://www.amazon.co.uk/gp/aw/s/ref=is_pg_3_2?rh=i%3Aaps%2Ck%3Atrousers+xl&page=3&keywords=trousers+xl&ie=UTF8&qid=1413659887
