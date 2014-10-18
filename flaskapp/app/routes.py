@@ -15,10 +15,10 @@ def params():
       flash(form.height.data)
       #form.weight.data
       par = dict()
-      par['height'] = 12
-      par['weight'] = 12
-      par['gender'] = 'Male'
-      par['keywords'] = "word1 word2"
+      par['height'] = form.height.data
+      par['weight'] = form.weight.data
+      par['gender'] = form.gender.data
+      par['keywords'] = form.keywords.data
       return render_template('output.html', outlist=amazoncrawl(par))
     else:
       return 'Form posted.'

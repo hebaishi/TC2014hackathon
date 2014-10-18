@@ -7,29 +7,32 @@ import re
 
 
 def amazoncrawl(params):
-    url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=trousers'    
-    response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text)
     prodlist = list()    
-    for link in soup.find_all('a'):
-        d = dict()
-        if (re.search('qid=',str(link.get('href')))):        
-            d['desc'] = str(link.string)
-            d['link'] = "http://www.amazon.co.uk" + str(link.get('href'))            
-            prodlink = "http://www.amazon.co.uk/"+str(link.get('href'))
-            response2 = requests.get(prodlink)
-            soup2 = bs4.BeautifulSoup(response2.text)        
-            for imgs in soup2.find_all('img'):
-                if (str(imgs.get('id')) == "detailImg"):            
-                    d['img'] = imgs.get('src')
-                    break
-            m=re.findall('£(\d+)\.(\d+)',response2.text.encode('utf-8'),re.I)
-            price=""            
-            if (m):            
-                if (len(m)> 0):
-                    price = str(m[len(m)-1][0]) + "." + str(m[len(m)-1][1])   
-            d['cost'] = price
-            prodlist.append(d)
+    for i in range(1,3):
+        k=re.sub(r'\s+',r'&',params['keywords'])        
+        url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=' + str(k) +'&page=' + str(i) 
+        response = requests.get(url)
+        soup = bs4.BeautifulSoup(response.text)
+        for link in soup.find_all('a'):
+            d = dict()
+            if (re.search('qid=',str(link.get('href')))):        
+                d['desc'] = str(link.string)
+                d['link'] = "http://www.amazon.co.uk" + str(link.get('href'))            
+                prodlink = "http://www.amazon.co.uk/"+str(link.get('href'))
+                response2 = requests.get(prodlink)
+                soup2 = bs4.BeautifulSoup(response2.text)        
+                for imgs in soup2.find_all('img'):
+                    if (str(imgs.get('id')) == "detailImg"):            
+                        d['img'] = imgs.get('src')
+                        break
+                m=re.findall('£(\d+)\.(\d+)',response2.text.encode('utf-8'),re.I)
+                price=""            
+                if (m):            
+                    if (len(m)> 0):
+                        price = str(m[len(m)-1][0]) + "." + str(m[len(m)-1][1])   
+                d['cost'] = price
+                d['site'] = "http://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png"            
+                prodlist.append(d)
     return prodlist
             
 if __name__ == '__main__':
@@ -37,7 +40,7 @@ if __name__ == '__main__':
     par['height'] = 12
     par['weight'] = 12
     par['gender'] = 'Male'
-    par['keywords'] = "word1 word2"
+    par['keywords'] = "skirt"
     pl = amazoncrawl(par)            
     
     
