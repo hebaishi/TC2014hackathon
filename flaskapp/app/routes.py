@@ -1,6 +1,8 @@
+# -*- coding: utf-8 -*-
 from flask import Flask, render_template,request, flash
 from forms import Params
 from crawler_amazon import amazoncrawl
+from crawler_asos import asoscrawl
 
 app = Flask(__name__)     
 app.secret_key = 'development key'
@@ -19,7 +21,9 @@ def params():
       par['weight'] = form.weight.data
       par['gender'] = form.gender.data
       par['keywords'] = form.keywords.data
-      return render_template('output.html', outlist=amazoncrawl(par))
+      outlist = amazoncrawl(par)
+      outlist = outlist + asoscrawl(par)
+      return render_template('output.html', outlist=outlist)
     else:
       return 'Form posted.'
  

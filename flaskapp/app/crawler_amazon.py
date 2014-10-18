@@ -28,8 +28,10 @@ def amazoncrawl(params):
                 m=re.findall('£(\d+)\.(\d+)',response2.text.encode('utf-8'),re.I)
                 price=""            
                 if (m):            
-                    if (len(m)> 0):
-                        price = str(m[len(m)-1][0]) + "." + str(m[len(m)-1][1])   
+                    if (len(m) == 1):
+                        price = str(m[0][0]) + "." + str(m[0][1])
+                    elif (len(m) == 2):
+                        price = str(m[0][0]) + "." + str(m[0][1]) + " - " + str(m[1][0]) + "." + str(m[1][1])
                 d['cost'] = price
                 d['site'] = "http://upload.wikimedia.org/wikipedia/commons/thumb/6/62/Amazon.com-Logo.svg/200px-Amazon.com-Logo.svg.png"            
                 prodlist.append(d)
