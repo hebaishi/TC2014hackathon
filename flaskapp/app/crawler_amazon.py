@@ -3,13 +3,10 @@ import requests
 import bs4
 import re
 
-root_url = 'http://pyvideo.org'
-index_url = root_url + '/category/50/pycon-us-2014'
 
 url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=trousers'
 
-
-if __name__ == '__main__':
+def amazoncrawl(params)
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text)
     for link in soup.find_all('a'):
@@ -24,6 +21,12 @@ if __name__ == '__main__':
                 if (str(imgs.get('id')) == "detailImg"):            
                     line += "IMG " + imgs.get('src')
             m=re.findall('£(\d+)\.(\d+)',str(response2.text),re.I)
-            price = str(m.group(1)) + "." + str(m.group(2))        
+            price=""            
+            if (m):            
+                if (len(m)> 0):
+                    price = str(m[len(m)-1][0]) + "." + str(m[len(m)-1][1])   
             line += " PRICE "+ price
             print line
+            
+#if __name__ == '__main__':
+            
