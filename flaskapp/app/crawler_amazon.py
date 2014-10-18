@@ -9,8 +9,12 @@ import re
 def amazoncrawl(params):
     prodlist = list()    
     for i in range(1,3):
-        k=re.sub(r'\s+',r'&',params['keywords'])        
-        url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=' + str(k) +'&page=' + str(i) 
+        k=re.sub(r'\s+',r'\+',params['keywords'])        
+        if (params['gender'] == "Male"):
+            g = "men"
+        else:
+            g = "women"        
+        url = 'http://www.amazon.co.uk/gp/aw/s/ref=is_box_?k=' + str(k) + "+" + g +'&page=' + str(i)
         response = requests.get(url)
         soup = bs4.BeautifulSoup(response.text)
         for link in soup.find_all('a'):
@@ -42,7 +46,7 @@ if __name__ == '__main__':
     par['height'] = 12
     par['weight'] = 12
     par['gender'] = 'Male'
-    par['keywords'] = "skirt"
+    par['keywords'] = "trousers"
     pl = amazoncrawl(par)            
     
     
