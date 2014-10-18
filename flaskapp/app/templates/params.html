@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+  <h2>Contact</h2>
+ 
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+   
+  <form action="{{ url_for('params') }}" method=post>
+    {{ form.height.label }}
+    {{ form.height }}
+ 
+    {{ form.weight.label }}
+    {{ form.weight }}
+ 
+    {{ form.gender.label }}
+    {{ form.gender() }}
+ 
+    {{ form.keywords.label }}
+    {{ form.keywords }}
+ 
+    {{ form.submit }}
+  </form>
+{% endblock %}
