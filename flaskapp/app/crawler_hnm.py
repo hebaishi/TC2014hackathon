@@ -19,31 +19,33 @@ def bankcrawl(params):
     bmi = float(params['weight'])/(h*h)
     print "bmi is " + str(bmi)    
     response = requests.get(url)
-    soup = bs4.BeautifulSoup(response.text.encode('utf-8'))
+    soup = bs4.BeautifulSoup(response.text)
     #print response.text    
     prodlink = list()    
+    link = None    
     for link in soup.find_all('a'):
-                    if (str(link.get('class')) == 'itemInfo'): 
-                        print str(link.get('class')) 
-                        prodlink.append(str(link.get('href')))
-                        print prodlink
-    imgl = list()
-    price = list()
-    des = list()
-    for plink in range(len(prodlink)):
-        d = dict()
-        d['link'] = prodlink[plink]  
-        responsep = requests.get(prodlink[plink])
-        soupp = bs4.BeautifulSoup(responsep.text.encode('utf-8'))
-        m = re.search('[\w./:-]+image1xl[\w.]+', str(soupp))
-        d['img'] = m.group(0)
-        p = re.search('ProductPriceText":"£([\d.]+)', str(soupp))
-        d['cost'] = p.group(1)
-        d1 = re.search('ProductName":"([\.\-\w\s]+)', str(soupp)).group(1)
-        d['desc'] = d1
-        d['site'] = 'http://content.asos-media.com/~/media/240613124858/Images/uk/Archive/june/asos-logo.png'
-        prodlist.append(d)
-    return prodlist
+       if (link.get('class') is not None):
+            if (link.get('class')[0] == 'itemInfo'): 
+                print str(link.get('class')[0]) 
+                prodlink.append(str(link.get('href')))
+                print prodlink[0]
+#    imgl = list()
+#    price = list()
+#    des = list()
+#    for plink in range(len(prodlink)):
+#        d = dict()
+#        d['link'] = prodlink[plink]  
+#        responsep = requests.get(prodlink[plink])
+#        soupp = bs4.BeautifulSoup(responsep.text.encode('utf-8'))
+#        m = re.search('[\w./:-]+image1xl[\w.]+', str(soupp))
+#        d['img'] = m.group(0)
+#        p = re.search('ProductPriceText":"£([\d.]+)', str(soupp))
+#        d['cost'] = p.group(1)
+#        d1 = re.search('ProductName":"([\.\-\w\s]+)', str(soupp)).group(1)
+#        d['desc'] = d1
+#        d['site'] = 'http://content.asos-media.com/~/media/240613124858/Images/uk/Archive/june/asos-logo.png'
+#        prodlist.append(d)
+#    return prodlist
         
 
 if __name__ == '__main__':
