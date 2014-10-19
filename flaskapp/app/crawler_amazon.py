@@ -23,7 +23,7 @@ def amazoncrawl(params):
         for link in soup.find_all('a'):
             d = dict()
             if (re.search('qid=',str(link.get('href')))):        
-                d['desc'] = str(link.string)
+                d['desc'] = link.string.encode('ascii', 'ignore') 
                 d['link'] = "http://www.amazon.co.uk" + str(link.get('href'))            
                 prodlink = "http://www.amazon.co.uk/"+str(link.get('href'))
                 response2 = requests.get(prodlink)
