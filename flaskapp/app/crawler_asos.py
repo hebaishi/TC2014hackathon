@@ -27,7 +27,7 @@ def asoscrawl(params):
     imgl = list()
     price = list()
     des = list()
-    for plink in range(30)[0::3]:
+    for plink in range(len(prodlink))[0::3]:
         d = dict()
         d['link'] = prodlink[plink]  
         responsep = requests.get(prodlink[plink])
@@ -35,9 +35,13 @@ def asoscrawl(params):
         m = re.search('[\w./:-]+image1xl[\w.]+', str(soupp))
         d['img'] = m.group(0)
         p = re.search('ProductPriceText":"£([\d.]+)', str(soupp))
-        d['cost'] = p.group(1)
-        d1 = re.search('ProductName":"([\.\-\w\s]+)', str(soupp)).group(1)
+        if (p is None):
+            continue
+        else:
+            d['cost'] = p.group(1)
+        d1 = re.search('ProductName":"([\'\.\-\w\s]+)', str(soupp)).group(1)
         d['desc'] = d1
+        d['desc'].encode('ascii', 'ignore')    
         d['site'] = 'http://content.asos-media.com/~/media/240613124858/Images/uk/Archive/june/asos-logo.png'
         prodlist.append(d)
     return prodlist
