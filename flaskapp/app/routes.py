@@ -13,10 +13,15 @@ def params():
   form = Params()
  
   if request.method == 'POST':
-    if form.validate() == False:
+    if (form.weight.data is None or form.height.data is None or form.gender.data is None or form.keywords.data is None):
       flash('All fields are required.')
-      flash(form.height.data)
-      #form.weight.data
+      print form.height.data
+      print form.weight.data
+      print form.gender.data
+      print form.keywords.data      
+      print "Error"
+      return render_template('params.html', form=form)
+    else:
       par = dict()
       par['height'] = form.height.data
       par['weight'] = form.weight.data
@@ -26,12 +31,8 @@ def params():
       outlist = outlist + asoscrawl(par)
       random.shuffle(outlist)
       return render_template('output.html', outlist=outlist)
-    else:
-      return 'Form posted.'
- 
- 
   elif request.method == 'GET':
-    return render_template('params.html', form=form)
+      return render_template('params.html', form=form)
  
 if __name__ == '__main__':
   app.run(debug=True)

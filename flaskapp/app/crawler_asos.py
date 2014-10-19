@@ -15,6 +15,9 @@ def asoscrawl(params):
     else:
           url = 'http://www.asos.com/search/?q=women&q=' + k   
     print url
+    h= float(params['height'])/100     
+    bmi = float(params['weight'])/(h*h)
+    print "bmi is " + str(bmi)    
     response = requests.get(url)
     soup = bs4.BeautifulSoup(response.text.encode('utf-8'))
     prodlink = list()    

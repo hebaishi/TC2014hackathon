@@ -8,7 +8,10 @@ import re
 
 def amazoncrawl(params):
     prodlist = list()    
-    for i in range(1,3):
+    h= float(params['height'])/100     
+    bmi = float(params['weight'])/(h*h)
+    print "bmi is " + str(bmi)     
+    for i in range(1,5):
         k=re.sub(r'\s+',r'\+',params['keywords'])        
         if (params['gender'] == "Male"):
             g = "men"
